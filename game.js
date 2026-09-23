@@ -41,13 +41,14 @@ const levels=[
   options:["Islam → Hindu → Animisme","Kepercayaan awal → Hindu/Buddha → Islam","Buddha → Islam → Animisme","Hindu → Dinamisme → Islam"],answer:1}
 ];
 
-let level=0,score=0,lives=3,running=false;
+let level=0,score=0,lives=3,running=false,audio=null,enemyTimer=null;
 let player={x:1,y:1},dots=new Set(),enemies=[];
 
 const scoreEl=document.getElementById("score");
 const lifeEl=document.getElementById("life");
 const levelEl=document.getElementById("level");
 
+function beep(f=500,d=.08){try{audio??=new (window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),v=audio.createGain();o.frequency.value=f;v.gain.value=.06;o.connect(v).connect(audio.destination);o.start();v.gain.exponentialRampToValueAtTime(.001,audio.currentTime+d);o.stop(audio.currentTime+d)}catch(e){}}
 function id(x,y){return `${x},${y}`}
 function isWall(x,y){return !MAP[y] || MAP[y][x]==="#"}
 function updateHUD(){scoreEl.textContent=score;lifeEl.textContent=lives;levelEl.textContent=level+1}
@@ -82,8 +83,8 @@ function draw(){
   ctx.beginPath();ctx.arc(x*TILE+17.5,y*TILE+17.5,4,0,Math.PI*2);ctx.fill();
  });
  ctx.font="25px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";
- ctx.fillText("📜",player.x*TILE+17.5,player.y*TILE+18);
- enemies.forEach((e,i)=>ctx.fillText(i===0?"🌫️":"👤",e.x*TILE+17.5,e.y*TILE+18));
+ ctx.fillText("🧭",player.x*TILE+17.5,player.y*TILE+18);
+ enemies.forEach((e,i)=>ctx.fillText(i===0?"🌫️":"👻",e.x*TILE+17.5,e.y*TILE+18));
 }
 
 function move(dx,dy){
@@ -91,7 +92,7 @@ function move(dx,dy){
  const nx=player.x+dx,ny=player.y+dy;
  if(isWall(nx,ny))return;
  player.x=nx;player.y=ny;
- if(dots.delete(id(nx,ny))){score+=10;updateHUD()}
+ if(dots.delete(id(nx,ny))){score+=10;beep(760,.06);updateHUD()}
  moveEnemies(); checkHit(); draw();
  if(dots.size===0)showQuiz();
 }
@@ -109,13 +110,13 @@ function moveEnemies(){
 
 function checkHit(){
  if(enemies.some(e=>e.x===player.x&&e.y===player.y)){
-  lives--;player={x:1,y:1};updateHUD();
+  beep(130,.22);lives--;player={x:1,y:1};updateHUD();
   if(lives<=0){lives=3;score=Math.max(0,score-50);setupLevel()}
  }
 }
 
 function showQuiz(){
- running=false;
+ running=false;clearInterval(enemyTimer);beep(950,.14);
  const L=levels[level];
  document.getElementById("question").textContent=L.q;
  const area=document.getElementById("answers");area.innerHTML="";
@@ -124,14 +125,14 @@ function showQuiz(){
   b.textContent=String.fromCharCode(65+i)+". "+opt;
   b.onclick=()=>{
    if(i===L.answer){
-    score+=100;document.getElementById("quiz").classList.add("hidden");
+    beep(900,.16);score+=100;document.getElementById("quiz").classList.add("hidden");
     level++;
     if(level>=levels.length){
       document.getElementById("finalScore").textContent=score;
       document.getElementById("finish").classList.remove("hidden");
-    }else{setupLevel();running=true}
+    }else{setupLevel();running=true;startEnemies()}
    }else{
-    lives--;updateHUD();b.disabled=true;b.textContent+="  ✗ Cuba lagi";
+    beep(160,.18);lives--;updateHUD();b.disabled=true;b.textContent+="  ✗ Cuba lagi";
     if(lives<=0){lives=3;score=Math.max(0,score-50);updateHUD()}
    }
   };
@@ -140,9 +141,11 @@ function showQuiz(){
  document.getElementById("quiz").classList.remove("hidden");
 }
 
+function startEnemies(){clearInterval(enemyTimer);enemyTimer=setInterval(()=>{if(running){moveEnemies();checkHit();draw()}},520-Math.min(level*55,150))}
 document.getElementById("start").onclick=()=>{
+ audio??=new (window.AudioContext||window.webkitAudioContext)();beep(520,.1);
  document.getElementById("intro").classList.add("hidden");
- running=true;setupLevel();
+ running=true;setupLevel();startEnemies();
 };
 
 addEventListener("keydown",e=>{
