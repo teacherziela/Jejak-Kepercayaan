@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jejak Kepercayaan - Pac-Maze Alam Melayu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <div class="tag">HISTORYVERSE • TINGKATAN 2 • BAB 4.1</div>
+    <h1>JEJAK KEPERCAYAAN</h1>
+    <p>Pac-Maze Alam Melayu</p>
+  </div>
+  <div class="hud">
+    <span>⭐ <b id="score">0</b></span>
+    <span>❤️ <b id="life">3</b></span>
+    <span>📜 <b id="level">1</b>/4</span>
+  </div>
+</header>
+
+<section id="intro" class="panel">
+  <h2>🗺️ Misi Pengembara</h2>
+  <p id="mission"></p>
+  <p>Kutip semua <b>Manuskrip Ilmu</b> dan elakkan Penjaga Kabus. Selesai maze untuk membuka Gerbang Ilmu.</p>
+  <button id="start">MULA MISI</button>
+</section>
+
+<main>
+  <canvas id="game" width="630" height="630"></canvas>
+  <div class="controls">
+    <button data-dir="up">▲</button>
+    <div>
+      <button data-dir="left">◀</button>
+      <button data-dir="down">▼</button>
+      <button data-dir="right">▶</button>
+    </div>
+  </div>
+  <p class="hint">Laptop: Arrow Keys / WASD • Telefon: butang arah</p>
+</main>
+
+<div id="quiz" class="overlay hidden">
+  <div class="panel quizbox">
+    <h2>🧠 Gerbang Ilmu</h2>
+    <p id="question"></p>
+    <div id="answers"></div>
+  </div>
+</div>
+
+<div id="finish" class="overlay hidden">
+  <div class="panel quizbox">
+    <h2>🏆 Pengembara Berjaya!</h2>
+    <p>Anda berjaya menelusuri perkembangan agama dan kepercayaan masyarakat Kerajaan Alam Melayu.</p>
+    <h3>Skor Akhir: <span id="finalScore"></span></h3>
+    <button onclick="location.reload()">MAIN SEMULA</button>
+  </div>
+</div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>

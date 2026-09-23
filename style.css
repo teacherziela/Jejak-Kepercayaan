@@ -1,0 +1,21 @@
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#563076,#160e22 70%);color:#fff;font-family:Arial,system-ui,sans-serif}
+.app{max-width:1050px;margin:auto;padding:16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.tag{font-size:12px;font-weight:800;letter-spacing:1px;color:#d9bdf2}
+h1{margin:5px 0 2px;color:#ffd86b;letter-spacing:2px}
+header p{margin:0;color:#e9dcf4}
+.hud{display:flex;gap:8px;flex-wrap:wrap}
+.hud span{background:#261638;border:1px solid #9369b9;border-radius:14px;padding:10px 13px}
+.panel{background:linear-gradient(145deg,#251535,#1b1028);border:2px solid #966fc0;border-radius:20px;padding:20px;box-shadow:0 14px 45px #0008}
+.panel button{border:0;border-radius:13px;background:#ffd86b;color:#2b173c;font-weight:900;padding:12px 20px;cursor:pointer}
+main{text-align:center;margin-top:14px}
+canvas{width:min(92vw,630px);height:auto;background:#0c0812;border:4px solid #9b72c3;border-radius:16px;box-shadow:0 0 30px #a36ad255}
+.controls{margin:12px auto 4px}
+.controls button{width:62px;height:48px;margin:3px;border:1px solid #9f7abd;border-radius:12px;background:#593676;color:white;font-size:22px;font-weight:bold;touch-action:manipulation}
+.hint{font-size:12px;color:#cbb8da}
+.overlay{position:fixed;inset:0;background:#08050ccc;display:grid;place-items:center;padding:18px;z-index:10}
+.quizbox{max-width:560px;width:100%}
+#answers button{display:block;width:100%;margin:9px 0;text-align:left;background:#eee;color:#241530}
+.hidden{display:none!important}
+@media(max-width:650px){header{display:block}.hud{margin-top:10px}.app{padding:10px}}
